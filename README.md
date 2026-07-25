@@ -1,4 +1,4 @@
-# mvdup v1.0
+# mvdup
 
 A small command-line tool that finds duplicate files under a directory and
 moves the extra copies out to a separate location, leaving one copy of each
@@ -47,11 +47,6 @@ mvdup -src <dir> [-dest <dir>] [-report <file>] [-dry-run] [-min-size <bytes>] [
 ```
 mvdup -src "D:\Photos" -dest "D:\Photos\_duplicates" -report duplicates.txt
 ```
-
-```
-mvdup -src "G:\Downloads\Books 2026" -dest "G:\Downloads\Books 2026" -report duplicates.txt  -progress true -workers 10
-```
-
 
 Do a dry run first to see what would happen without moving anything:
 
