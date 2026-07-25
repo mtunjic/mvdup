@@ -100,7 +100,7 @@ func TestHashConcurrentlyStopsDispatchingOnCanceledContext(t *testing.T) {
 	root := t.TempDir()
 
 	var entries []FileEntry
-	for i := range 20 {
+	for i := 0; i < 20; i++ {
 		p := filepath.Join(root, fmt.Sprintf("f%02d.txt", i))
 		writeFile(t, p, "same size content!!!")
 		info, err := os.Stat(p)
