@@ -125,14 +125,17 @@ func TestHashFileMatchesKnownDigest(t *testing.T) {
 }
 
 func TestSamePathOrChild(t *testing.T) {
+	root := filepath.Join(string(filepath.Separator), "root")
+	dupes := filepath.Join(root, "dupes")
+
 	cases := []struct {
 		path, ancestor string
 		want           bool
 	}{
-		{`C:\root\dupes`, `C:\root\dupes`, true},
-		{`C:\root\dupes\a\b.txt`, `C:\root\dupes`, true},
-		{`C:\root\other`, `C:\root\dupes`, false},
-		{`C:\root`, `C:\root\dupes`, false},
+		{dupes, dupes, true},
+		{filepath.Join(dupes, "a", "b.txt"), dupes, true},
+		{filepath.Join(root, "other"), dupes, false},
+		{root, dupes, false},
 	}
 	for _, c := range cases {
 		got := samePathOrChild(c.path, c.ancestor)
