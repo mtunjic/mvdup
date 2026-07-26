@@ -6,6 +6,7 @@ name: Go
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -26,3 +27,39 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+  release:
+    name: Build and publish release binaries
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Build release binaries
+      run: |
+        set -e
+        mkdir -p dist
+        targets="windows/amd64 linux/amd64 linux/arm64 darwin/amd64 darwin/arm64"
+        for target in $targets; do
+          os=${target%/*}
+          arch=${target#*/}
+          ext=""
+          if [ "$os" = "windows" ]; then ext=".exe"; fi
+          out="dist/mvdup-${os}-${arch}${ext}"
+          echo "building $out"
+          GOOS=$os GOARCH=$arch CGO_ENABLED=0 go build -o "$out" .
+        done
+
+    - name: Publish GitHub release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/*
+        generate_release_notes: true
