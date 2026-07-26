@@ -9,18 +9,18 @@ import (
 // Report bundles everything needed to render the console summary and the
 // text report file.
 type Report struct {
-	SrcRoot       string
-	DestRoot      string
-	DryRun        bool
-	Interrupted   bool // true if the user stopped the run early (Ctrl+C)
-	Started       time.Time
-	Duration      time.Duration
-	FilesScanned  int
-	BytesScanned  int64
-	Groups        []DupGroup
-	MoveResults   []MoveResult
-	ScanWarnings  []string
-	HashWarnings  []string
+	SrcRoot      string
+	DestRoot     string
+	DryRun       bool
+	Interrupted  bool // true if the user stopped the run early (Ctrl+C)
+	Started      time.Time
+	Duration     time.Duration
+	FilesScanned int
+	BytesScanned int64
+	Groups       []DupGroup
+	MoveResults  []MoveResult
+	ScanWarnings []string
+	HashWarnings []string
 }
 
 func (r *Report) duplicateFileCount() int {
